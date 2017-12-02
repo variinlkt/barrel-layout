@@ -20,6 +20,14 @@
 <ul id="brl-container">	</ul>
 ```
 * js
+
+```
+new Barrel(imgArr,baseHeight=100,baseNum=9.5)
+```
+arguments:
+* imgArr
+* baseHeight:the height of a img row,**inferior to baseNum**
+* baseNum:the baseHeight depends on baseNum, **baseHeight=container.width/baseNum||baseHeight**
 ```
   <script src="js/Barrel.min.js"></script>
   <script>
