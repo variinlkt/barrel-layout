@@ -3,6 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>barrel</title>
+	<link rel="stylesheet" href="css/Barrel.min.css">
 	<style>
 		*{
 			padding: 0;
@@ -10,119 +11,16 @@
 			list-style: none;
 			box-sizing: border-box;
 		}
-		.clearfix::after{
-			content: '';
-			display: block;
-			clear: both;
-		}
-		#container{
-			width: 100%;
-			margin: 0 auto;
-		}
-		#container>li{
-			float: left;
-			margin-bottom: 10px;
-			height: auto;
-		}
+		
 	</style>
 </head>
 <body>
-	<ul class="clearfix" id="container">		
+	<ul id="brl-container">		
 	</ul>
-	<script type="text/javascript">
-		class Barrel{
-			constructor(ele,baseH){
-				this.ct=ele;
-				this.baseHeight=baseH;
-				this.maxWidth=ele.offsetWidth;
-				this.lastRowWidth=0;
-				this.imgList=[];
-				this.data=[];
-				this.bind();
-				this.imgArr=[];
-			}
-			createImg(arr){
-				let num=0;
-				if(this.data.length==0){
-					for(let i in arr){
-						this.data.push(arr[i]);
-					}
-				}
-				for(let i in this.data){
-					let img={};
-					img[i]=new Image();
-					img[i].onload=()=>{
-						let imgHeight=img[i].height;
-						let imgWidth=img[i].width;
-						let proportion=imgWidth/imgHeight;
-						let imgInfo={
-							self:img[i],
-							width:this.baseHeight*proportion,
-							height:this.baseHeight
-						}
-						this.render(imgInfo,num);
-						num++;
-					};
-
-					img[i].src=this.data[i];
-				}
-			}
-			render(imgInfo,num){
-				let rowHeight=this.baseHeight,
-				rowWidth=0,
-				lastImg=imgInfo,
-				tempArr=[];
-				this.imgList.push(imgInfo);
-				for(let i in this.imgList){
-					rowWidth+=this.imgList[i].width;
-					if(this.maxWidth<rowWidth){
-						this.imgList.pop();
-						rowWidth-=lastImg.width;
-						rowHeight=this.maxWidth*this.baseHeight/rowWidth;
-						this.createRow(rowHeight);//生成一行
-						this.imgList=[];
-						this.imgList.push(lastImg);//加入下一行豪华午餐
-					}
-				}
-				if(num===this.data.length-1 && this.imgList.length != 0){
-				//已经载入最后一张图片了且还有最后一行
-					tempArr=this.imgList;
-					for(let i in tempArr){
-						rowWidth+=this.imgList[i].width;
-						rowHeight=this.maxWidth*this.baseHeight/rowWidth;
-
-					}
-					this.createRow(rowHeight);//生成最后一行
-					this.lastRowWidth=rowWidth;//最后一行的长度
-				}
-			}
-			createRow(rowHeight){
-				let row=document.createElement('li'),
-				div=document.createElement('div');
-				div.style.height=rowHeight+'px';
-				for(let i in this.imgList){
-					let img=this.imgList[i].self;
-					img.style.height=rowHeight+'px';
-					div.appendChild(img);
-					row.appendChild(div);
-
-				}
-				this.ct.appendChild(row);
-			}
-			bind(){
-				window.addEventListener('resize',()=>{
-					this.ct.innerHTML='';
-					this.maxWidth=this.ct.offsetWidth;
-					this.lastRowWidth=0;
-					this.imgList=[];
-					this.createImg(this.data);
-
-				})
-			}
-		}
-
-		let ct=document.getElementById('container');
-		let barrel=new Barrel(ct,100);
+	<script src="js/Barrel.min.js"></script>
+	<script>
+		let ct=document.getElementById('brl-container');
+		let barrel=new Barrel(ct);
 		let arr=['./img/1.jpg','img/2.jpg','img/3.jpg','img/4.jpg','img/5.jpg','img/6.jpg','img/7.jpg','img/8.jpg','img/9.jpg','img/10.jpg','img/11.jpg',
 		'img/12.jpg','img/13.jpg','img/14.jpg','img/15.jpg','img/16.jpg','img/17.jpg','img/18.jpg','img/19.jpg','img/20.jpg','img/21.jpg'];
 		barrel.createImg(arr);
